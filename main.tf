@@ -13,9 +13,10 @@ module "vpc" {
   tags                         = local.project_tags
   apci_frontend_subnet_az2a_id = var.vpc_cidr_block
   apci_frontend_subnet_az2b_id = var.vpc_cidr_block
-  apci_db_subnet_az2a_id = module.vpc.apci_db_subnet_az2a_id
-  apci_db_subnet_az2b_id = module.vpc.apci_db_subnet_az2b_id
-  apci_backend_subnet_az2a_id = module.vpc.apci_backend_subnet_az2a_id
+  apci_db_subnet_az2a_id       = module.vpc.apci_db_subnet_az2a_id
+  apci_db_subnet_az2b_id       = module.vpc.apci_db_subnet_az2b_id
+  apci_backend_subnet_az2a_id  = module.vpc.apci_backend_subnet_az2a_id
+  #gateway_id                   = module.vpc.igway_id
 }
 
 module "alb" {
@@ -39,12 +40,12 @@ module "asg" {
   key_name                     = var.key_name
   image_id                     = var.image_id
   apci_frontend_subnet_az2a_id = module.vpc.apci_frontend_subnet_az2a_id
-  apci_frontend_subnet_az2b_id = module.vpc.apci_frontend_subnet_az2b_id 
-  apci_target_group_arn = module.alb.apci_target_group_arn
+  apci_frontend_subnet_az2b_id = module.vpc.apci_frontend_subnet_az2b_id
+  apci_target_group_arn        = module.alb.apci_target_group_arn
 }
 
 module "RDS" {
-  source = "./RDS"
+  source                 = "./RDS"
   apci_db_subnet_az2a_id = module.vpc.apci_db_subnet_az2a_id
   apci_db_subnet_az2b_id = module.vpc.apci_db_subnet_az2b_id
   tags                   = local.project_tags
@@ -54,25 +55,23 @@ module "RDS" {
   account_id             = var.account_id
   engine_version         = var.engine_version
   instance_class         = var.instance_class
-  db_username            = var.db_username 
-parameter_group_name     = var.parameter_group_name
-bastion_host_id = module.ec2.bastion_host_id
+  db_username            = var.db_username
+  parameter_group_name   = var.parameter_group_name
+  apci_bastion_sg_id     = module.ec2.apci_bastion_sg_id
 
 }
 
 module "ec2" {
-source = "./ec2"
-apci_main_vpc_id = module.vpc.apci_main_vpc_id
-apci_frontend_subnet_az2a_id = module.vpc.apci_frontend_subnet_az2a_id
-apci_backend_subnet_az2b_id  = module.vpc.apci_backend_subnet_az2b_id
-apci_backend_subnet_az2a_id  = module.vpc.apci_backend_subnet_az2a_id
-ec2_ami                      = module.ec2.ec2_ami
-bastion_sg_id                = module.ec2.aws_security_group.apci_bastion_sg.id
-tags                         = local.project_tags
-key_name                     = var.key_name
-vpc_id                       = module.vpc.vpc_id
-vpc_cidr_block               = module.vpc.cidr_block
-instance_type                = var.instance_type
-image_id = var.image_id
+  source                       = "./ec2"
+  apci_frontend_subnet_az2a_id = module.vpc.apci_frontend_subnet_az2a_id
+  apci_backend_subnet_az2b_id  = module.vpc.apci_backend_subnet_az2b_id
+  apci_backend_subnet_az2a_id  = module.vpc.apci_backend_subnet_az2a_id
+  ec2_ami                      = var.ec2_ami
+  apci_bastion_sg_id           = module.ec2.apci_bastion_sg_id
+  tags                         = local.project_tags #
+  key_name                     = var.key_name       #
+  vpc_id                       = module.vpc.vpc_id  #
+  instance_type                = var.instance_type  #
+  image_id                     = var.image_id       #
 }
 

@@ -6,6 +6,10 @@ variable "frontend_cidr_block" {
   type = list(string)
 }
 
+#variable "igway_id" {
+#type = string
+#}
+
 variable "availability_zone" {
   type = list(string)
 }
@@ -35,7 +39,7 @@ variable "key_name" {
 }
 
 variable "region" {
- type =  string
+  type = string
 }
 
 variable "account_id" {
@@ -58,7 +62,7 @@ variable "parameter_group_name" {
   type = string
 }
 
-variable "bastion_sg_id" {
+variable "apci_bastion_sg_id" {
   type = string
 }
 

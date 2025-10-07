@@ -20,7 +20,7 @@ resource "aws_security_group" "apci_rds_sg" {
 
 resource "aws_vpc_security_group_ingress_rule" "allow_tls_ipv4" {
   security_group_id = aws_security_group.apci_rds_sg.id
-  referenced_security_group_id = var.bastion_host_id
+  referenced_security_group_id = var.apci_bastion_sg_id
   from_port         = 3306
   ip_protocol       = "tcp"
   to_port           = 3306
@@ -36,7 +36,7 @@ resource "aws_vpc_security_group_egress_rule" "allow_all_traffic_ipv4" {
 
 # 🔍 Look up the existing secret by name
 data "aws_secretsmanager_secret" "apci_rds_secret" {
-  name = "rdsmysql2"
+  name = "rdsmysql4"
 }
 
 # 📥 Get the latest version of the secret (to retrieve credentials)

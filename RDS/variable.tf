@@ -43,6 +43,7 @@ variable "parameter_group_name" {
   type = string
 }
 
-variable "bastion_host_id" {
+
+variable "apci_bastion_sg_id" {
   type = string
 }

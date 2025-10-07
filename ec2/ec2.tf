@@ -11,7 +11,7 @@ resource "aws_security_group" "apci_bastion_sg" {
 
 resource "aws_vpc_security_group_ingress_rule" "allow_ssh" {
   security_group_id = aws_security_group.apci_bastion_sg.id
-  cidr_ipv4         = "0.0.0.0/24"
+  cidr_ipv4         = "0.0.0.0/0"
   from_port         = 22
   ip_protocol       = "tcp"
   to_port           = 22
@@ -57,9 +57,9 @@ resource "aws_vpc_security_group_ingress_rule" "allow_private_ssh" {
 }
 
 resource "aws_vpc_security_group_egress_rule" "allow_all_traffic" {
-  security_group_id = aws_security_group.apci_private_server_sg.id
-  cidr_ipv4         = "0.0.0.0/0"
-  ip_protocol       = "-1"
+  security_group_id            = aws_security_group.apci_private_server_sg.id
+  cidr_ipv4                    = "0.0.0.0/0"
+  ip_protocol                  = "-1"
 }
 
 # PRIVATE SERVER AZ2A
@@ -85,6 +85,7 @@ resource "aws_instance" "apci_private_server_az2b" {
   key_name                    = var.key_name
   vpc_security_group_ids      = [aws_security_group.apci_private_server_sg.id]
 
+  
   tags = merge(var.tags, {
     Name = "${var.tags["project"]}-${var.tags["application"]}-${var.tags["environment"]}-private-server-az2b"
   })

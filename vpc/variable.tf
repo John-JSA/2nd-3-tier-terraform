@@ -2,6 +2,10 @@ variable "vpc_cidr_block" {
   type = string
 }
 
+#variable "igway_id" {
+#type = string
+#}
+
 variable "tags" {
   type = map(string)
 }

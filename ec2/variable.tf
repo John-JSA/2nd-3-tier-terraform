@@ -3,13 +3,10 @@ variable "vpc_id" {
   type = string
 }
 
-variable "bastion_sg_id" {
+variable "apci_bastion_sg_id" {
   type = string
 }
 
-variable "vpc_cidr_block" {
-  type = string
-}
 
 variable "ec2_ami" {
   type = string
@@ -37,10 +34,6 @@ variable "apci_backend_subnet_az2a_id" {
 }
 
 variable "apci_backend_subnet_az2b_id" {
-  type = string
-}
-
-variable "apci_main_vpc_id" {
   type = string
 }
   
